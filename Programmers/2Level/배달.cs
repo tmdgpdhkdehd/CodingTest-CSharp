@@ -1,46 +1,54 @@
-#include <iostream>
-#include <vector>
-#include <queue>
-using namespace std;
+using System;
+using System.Linq;
+using System.Collections.Generic;
 
-int solution(int N, vector<vector<int> > road, int K) {
-    int answer = 0;
-
-    vector<vector<int>> graph(N+1, vector<int>(N+1, 1e8));
-    for(int i=1; i<=N; ++i) graph[i][i] = 0;
-    
-    for(auto r: road) {
-    	// 제한사항
-        graph[r[0]][r[1]] = min(graph[r[0]][r[1]], r[2]);
-        graph[r[1]][r[0]] = min(graph[r[1]][r[0]], r[2]);
-    }
-    
-    // Dijkstra Algorithm
-    priority_queue<pair<int,int>> pq; // dist, index
-    vector<int> dist(N+1, 1e8);
-    
-    pq.push({0, 1});
-    dist[1] = 0;
-    
-    while(!pq.empty()) {
-        int d = -pq.top().first;
-        int node = pq.top().second;
-        pq.pop();
+class Solution
+{
+    public int solution(int N, int[,] road, int K)
+    {
+        int answer = 0;
+        int[] nCosts = new int[N];
         
-        for(int i=1; i<=N; ++i) {
-            if(i == node || graph[node][i] == 1e8) continue;
+        for (int i = 0; i < N; i++)
+        {
+            if (i == 0)
+                nCosts[0] = 0;
+            else
+                nCosts[i] = int.MaxValue;
+        }
+        
+        Queue<int> que = new Queue<int>();
+        que.Enqueue(1);
+        
+        while (que.Count > 0)
+        {
+            int nCurrent = que.Dequeue();
             
-            if(dist[i] > d + graph[node][i]) {
-                dist[i] = d + graph[node][i];
+            for (int i = 0; i < road.GetLength(0); i++)
+            {
+                int nStart = road[i, 0];
+                int nEnd = road[i, 1];
+                int nCost = road[i, 2];
                 
-                pq.push({-dist[i], i});
+                if (nStart == nCurrent)
+                {
+                    if (nCosts[nEnd - 1] > nCost + nCosts[nStart - 1])
+                    {
+                        nCosts[nEnd - 1] = nCost + nCosts[nStart - 1];
+                        que.Enqueue(nEnd);
+                    }
+                }
+                else if (nEnd == nCurrent)
+                {
+                    if (nCosts[nStart - 1] > nCost + nCosts[nEnd - 1])
+                    {
+                        nCosts[nStart - 1] = nCost + nCosts[nEnd -1];
+                        que.Enqueue(nStart);
+                    }
+                }
             }
         }
+        
+        return nCosts.Where(x => x <= K).Count();
     }
-
-    for(int i=1; i<=N; ++i) {
-        if(dist[i] <= K) answer++;
-    }
-
-    return answer;
 }
