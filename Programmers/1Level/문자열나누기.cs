@@ -3,7 +3,6 @@ using System;
 public class Solution {
     public int solution(string s) {
         int answer = 0;
-        bool final = false;
         
         char firstChar = s[0];
         int firstCount = 0;
