@@ -12,9 +12,14 @@ public class Solution {
     public int[] solution(string s) {
         int[] answer = Enumerable.Repeat<int>(0, s.Length).ToArray<int>();
         Dictionary<char, int> location = new Dictionary<char, int>();
-
+        
         for (int i = 0; i < s.Length; i++)
         {
+            location.Keys.ToList().ForEach (key =>
+                {
+                    location[key] += 1;
+                });
+            
             if (!location.ContainsKey(s[i]))
             {
                 answer[i] = -1;
@@ -25,13 +30,8 @@ public class Solution {
                 answer[i] = location[s[i]];
                 location[s[i]] = 0;
             }
-
-            location.Keys.ToList().ForEach (key =>
-                {
-                    location[key] += 1;
-                });
         }
-
+        
         return answer;
     }
 }
