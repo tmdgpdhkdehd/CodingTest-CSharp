@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-// 1. 숫자인 곳이 있으면 bfs 실행, X인 곳이면 건너뛰기
-// 2. bfs 실행하면 무한탐색을 막기 위해 해당 위치의 식량 값을 저장하고 해당 위치를 X 표시
-// 3. bfs 실행 중, 상하좌우 중 연결되어 있는 곳(숫자)이 있으면 그 위치에 bfs 실행 반복
+// 1. 숫자인 곳이 있으면 dfs 실행, X인 곳이면 건너뛰기
+// 2. dfs 실행하면 무한탐색을 막기 위해 해당 위치의 식량 값을 저장하고 해당 위치를 X 표시
+// 3. dfs 실행 중, 상하좌우 중 연결되어 있는 곳(숫자)이 있으면 그 위치에 dfs 실행 반복
 // 4. 더는 연결된 곳이 없으면 누적된 식량 값을 리스트에 저장
 // 맵을 모두 탐색할 때까지 1~4번 반복
 // 맵을 모두 탐색했으면 오름차순으로 정렬한 후 배열로 전환하여 반환
@@ -12,7 +12,7 @@ public class Solution {
     int colume = 0;     // 행
     int row = 0;        // 열
 
-    public int bfs(int x, int y, string[] maps)
+    public int dfs(int x, int y, string[] maps)
     {
         // 상하좌우
         int[] moveX = {-1, 1, 0, 0};
@@ -39,9 +39,9 @@ public class Solution {
             // X인 곳은 건너뛰기
             if (maps[nx][ny] == 'X')
                 continue;
-            // 섬이 있다면 bfs 실행하고 식량 누적
+            // 섬이 있다면 dfs 실행하고 식량 누적
             else
-                food += bfs(nx, ny, maps);
+                food += dfs(nx, ny, maps);
         }
 
         return food;
@@ -61,7 +61,7 @@ public class Solution {
                     continue;
                 
                 // 누적된 식량을 리스트에 저장
-                int food = bfs(i, j, maps);
+                int food = dfs(i, j, maps);
                 answer.Add(food);
             }
         }
