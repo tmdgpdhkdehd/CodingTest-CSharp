@@ -22,7 +22,7 @@ public class Solution {
         int food = (int)Char.GetNumericValue(maps[x][y]);
         // maps[x][y] = 'X'를 하려고 하면
         // property or indexer `string.this[int]' cannot be assigned to (it is read-only)
-        // 라는 오류가 뜨기 때문에 StringBuilder 사용하여 바꿈
+        // 라는 오류가 뜨기 때문에 StringBuilder 클래스를 이용하여 바꿈
         StringBuilder sb = new StringBuilder(maps[x]);
         sb[y] = 'X';
         maps[x] = sb.ToString();
